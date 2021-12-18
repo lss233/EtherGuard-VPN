@@ -26,7 +26,7 @@ etherguard-go-static: $(wildcard *.go) $(wildcard */*.go)
 	go mod download && \
 	go mod tidy && \
 	go mod vendor && \
-	CGO_ENABLED=0 go build -a -ldflags '-extldflags "-static"'  -v -o "$@"
+	CGO_ENABLED=0 go build -a -trimpath -ldflags '-s -w -extldflags "-static"'  -v -o "$@"
 
 vpp:
 	@export GIT_CEILING_DIRECTORIES="$(realpath $(CURDIR)/..)" && \
@@ -44,6 +44,13 @@ etherguard-go-vpp: $(wildcard *.go) $(wildcard */*.go)
 	go mod vendor && \
 	patch -p0 -i govpp_remove_crcstring_check.patch && \
 	go build -v -tags vpp -o "$@"
+
+etherguard-go-vpp-static: $(wildcard *.go) $(wildcard */*.go)
+	go mod download && \
+	go mod tidy && \
+	go mod vendor && \
+	patch -p0 -i govpp_remove_crcstring_check.patch && \
+	CGO_ENABLED=0 go build -trimpath -a -ldflags '-s -w -extldflags "-static"'  -v -tags vpp -o "$@"
 
 static:
 	@export GIT_CEILING_DIRECTORIES="$(realpath $(CURDIR)/..)" && \
