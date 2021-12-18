@@ -46,7 +46,7 @@ etherguard-go-vpp: $(wildcard *.go) $(wildcard */*.go)
 	go build -v -tags vpp -o "$@"
 
 static:
-    @export GIT_CEILING_DIRECTORIES="$(realpath $(CURDIR)/..)" && \
+	@export GIT_CEILING_DIRECTORIES="$(realpath $(CURDIR)/..)" && \
 	tag="$$(git describe 2>/dev/null)" && \
 	ver="$$(printf 'package main\n\nconst Version = "%s"\n' "$$tag")" && \
 	[ "$$(cat version.go 2>/dev/null)" != "$$ver" ] && \
@@ -55,7 +55,7 @@ static:
 	@$(MAKE) etherguard-go-static
 
 static-vpp:
-    @export GIT_CEILING_DIRECTORIES="$(realpath $(CURDIR)/..)" && \
+	@export GIT_CEILING_DIRECTORIES="$(realpath $(CURDIR)/..)" && \
 	tag="$$(git describe 2>/dev/null)" && \
 	ver="$$(printf 'package main\n\nconst Version = "%s"\n' "$$tag")" && \
 	[ "$$(cat version.go 2>/dev/null)" != "$$ver" ] && \
