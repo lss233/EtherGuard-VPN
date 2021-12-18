@@ -71,6 +71,7 @@ jobs:
             artifact_dir: ${{ matrix.arch }}
           shell: /bin/sh
           install: |
+            apt-get -y update
             apt install software-properties-common -y
             add-apt-repository ppa:longsleep/golang-backports
             apt-get -y update
