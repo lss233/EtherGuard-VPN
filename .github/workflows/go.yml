@@ -36,7 +36,7 @@ jobs:
             mkdir /artifacts/${artifact_dir}
             cp etherguard-go* /artifacts/${artifact_dir}
 
-    - uses: actions/upload-artifact@v2
-      with:
-        name: build
-        path: /artifacts/*
+      - uses: actions/upload-artifact@v2
+        with:
+          name: build
+          path: /artifacts/*
