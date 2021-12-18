@@ -5,7 +5,7 @@ on:
 
 jobs:
   x86_64:
-      runs-on: ubuntu-latest
+      runs-on: ubuntu-20.04
       name: Build for ${{ matrix.distro }} x86_64 and mipsle
       steps:
       - uses: actions/checkout@v2
@@ -15,7 +15,12 @@ jobs:
         with:
           go-version: 1.17
       - name: Install requirements
-        run: sudo apt-get install -y wireguard-tools upx-ucl
+        run: |
+        echo "deb [trusted=yes] https://packagecloud.io/fdio/release/ubuntu focal main" | sudo tee -a /etc/apt/sources.list.d/99fd.io.list > /dev/null
+        curl -L https://packagecloud.io/fdio/release/gpgkey | sudo apt-key add -
+        sudo apt-get -y update
+        sudo apt-get install -y vpp vpp-plugin-core python3-vpp-api vpp-dbg vpp-dev libmemif libmemif-dev
+        sudo apt-get install -y wireguard-tools upx-ucl
 
       - name: Build x86_64
         run: |
@@ -29,7 +34,7 @@ jobs:
       - name: Build mipsle
         run: |
           make clean
-          GOOS=linux GOARCH=mipsle GOMIPS=softfloat make all static vpp static-vpp
+          GOOS=linux GOARCH=mipsle GOMIPS=softfloat make all static
           upx -9 etherguard-go*
 
       - uses: actions/upload-artifact@v2
