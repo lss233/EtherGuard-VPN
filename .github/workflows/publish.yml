@@ -33,7 +33,7 @@ jobs:
           name: etherguard-x86_64
           path: etherguard-go*
 
-      - name: Upload x86_64 dynmatic build
+      - name: Upload x86_64 dynamic build
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
@@ -60,7 +60,7 @@ jobs:
           name: etherguard-mipsle
           path: etherguard-go*
 
-      - name: Upload mipsle dynmatic build
+      - name: Upload mipsle dynamic build
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
@@ -116,7 +116,7 @@ jobs:
           name: etherguard-multi_arch
           path: artifacts/
 
-      - name: Upload dynmatic build
+      - name: Upload dynamic build
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
