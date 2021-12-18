@@ -49,9 +49,9 @@ jobs:
             artifact_dir: ${{ matrix.arch }}
           shell: /bin/sh
           install: |
-            sudo add-apt-repository ppa:longsleep/golang-backports
-            sudo apt-get -y update
-            sudo apt-get install -y wireguard-tools
+            add-apt-repository ppa:longsleep/golang-backports
+            apt-get -y update
+            apt-get install -y wireguard-tools
           run: |
             make generate-version-and-build static
             mkdir /artifacts/${artifact_dir}
