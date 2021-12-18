@@ -16,11 +16,11 @@ jobs:
           go-version: 1.17
       - name: Install requirements
         run: |
-        echo "deb [trusted=yes] https://packagecloud.io/fdio/release/ubuntu focal main" | sudo tee -a /etc/apt/sources.list.d/99fd.io.list > /dev/null
-        curl -L https://packagecloud.io/fdio/release/gpgkey | sudo apt-key add -
-        sudo apt-get -y update
-        sudo apt-get install -y vpp vpp-plugin-core python3-vpp-api vpp-dbg vpp-dev libmemif libmemif-dev
-        sudo apt-get install -y wireguard-tools upx-ucl
+          echo "deb [trusted=yes] https://packagecloud.io/fdio/release/ubuntu focal main" | sudo tee -a /etc/apt/sources.list.d/99fd.io.list > /dev/null
+          curl -L https://packagecloud.io/fdio/release/gpgkey | sudo apt-key add -
+          sudo apt-get -y update
+          sudo apt-get install -y vpp vpp-plugin-core python3-vpp-api vpp-dbg vpp-dev libmemif libmemif-dev
+          sudo apt-get install -y wireguard-tools upx-ucl
 
       - name: Build x86_64
         run: |
