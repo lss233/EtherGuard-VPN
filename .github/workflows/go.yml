@@ -6,7 +6,7 @@ on:
 jobs:
   x86_64:
       runs-on: ubuntu-latest
-      name: Build on ${{ matrix.distro }} x86_64
+      name: Build for ${{ matrix.distro }} x86_64 and mipsle
       steps:
       - uses: actions/checkout@v2
 
@@ -15,31 +15,22 @@ jobs:
         with:
           go-version: 1.17
       - name: Install requirements
-        run: sudo apt-get install -y wireguard-tools
+        run: sudo apt-get install -y wireguard-tools upx-ucl
 
-      - name: Build
-        run: make generate-version-and-build static
+      - name: Build x86_64
+        run: |
+          make all static vpp static-vpp
 
       - uses: actions/upload-artifact@v2
         with:
           name: etherguard-x86_64
           path: etherguard-go*
 
-  mipsle:
-      runs-on: ubuntu-latest
-      name: Build on ${{ matrix.distro }} mipsle
-      steps:
-      - uses: actions/checkout@v2
-
-      - name: Set up Go
-        uses: actions/setup-go@v2
-        with:
-          go-version: 1.17
-      - name: Install requirements
-        run: sudo apt-get install -y wireguard-tools
-
-      - name: Build
-        run: GOOS=linux GOARCH=mipsle GOMIPS=softfloat make generate-version-and-build static
+      - name: Build mipsle
+        run: |
+          make clean
+          GOOS=linux GOARCH=mipsle GOMIPS=softfloat make all static vpp static-vpp
+          upx -9 etherguard-go*
 
       - uses: actions/upload-artifact@v2
         with:
