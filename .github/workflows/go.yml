@@ -4,7 +4,26 @@ on:
   - workflow_dispatch
 
 jobs:
-  build:
+  x86_64:
+      runs-on: ubuntu-latest
+      steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.17
+      - name: Install requirements
+        run: sudo apt-get install -y wireguard-tools
+
+      - name: Build
+        run: make generate-version-and-build static
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: etherguard-x86_64
+          path: etherguard-go*
+  multi-arch:
     runs-on: ubuntu-20.04
     name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
     strategy:
@@ -20,7 +39,7 @@ jobs:
         id: build
         with:
           arch: ${{ matrix.arch }}
-          distro: ubuntu-20.04
+          distro: ubuntu20.04
           githubToken: ${{ github.token }}
           setup: |
             mkdir -p "${PWD}/artifacts"
@@ -30,6 +49,8 @@ jobs:
             artifact_dir: ${{ matrix.arch }}
           shell: /bin/sh
           install: |
+            sudo add-apt-repository ppa:longsleep/golang-backports
+            sudo apt-get -y update
             sudo apt-get install -y wireguard-tools
           run: |
             make generate-version-and-build static
@@ -38,5 +59,5 @@ jobs:
 
       - uses: actions/upload-artifact@v2
         with:
-          name: build
+          name: etherguard-multi_arch
           path: /artifacts/*
