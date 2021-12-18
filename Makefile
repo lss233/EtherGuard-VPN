@@ -71,6 +71,8 @@ test:
 
 clean:
 	rm -f etherguard-go
+	rm -f etherguard-go-static
 	rm -f etherguard-go-vpp
+	rm -f etherguard-go-vpp-static
 
 .PHONY: all clean test install generate-version-and-build
