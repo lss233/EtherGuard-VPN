@@ -107,7 +107,7 @@ jobs:
             apt-get -y update
             apt-get install -y wireguard-tools golang-go build-essential git
           run: |
-            make all static vpp
+            make all static
             mkdir /artifacts/${artifact_dir}
             cp etherguard-go* /artifacts/${artifact_dir}
 
