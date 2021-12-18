@@ -4,23 +4,39 @@ on:
   - workflow_dispatch
 
 jobs:
-
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
+    name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
+    strategy:
+      matrix:
+        include:
+          - arch: aarch64
+          - arch: armv7
+          - arch: armv6
     steps:
-    - uses: actions/checkout@v2
-
-    - name: Set up Go
-      uses: actions/setup-go@v2
-      with:
-        go-version: 1.17
-    - name: Install requirements
-      run: sudo apt-get install -y wireguard-tools
-
-    - name: Build
-      run: make generate-version-and-build static
+      - uses: actions/checkout@v2
+      - uses: uraimo/run-on-arch-action@v2.0.5
+        name: Build artifact
+        id: build
+        with:
+          arch: ${{ matrix.arch }}
+          distro: ubuntu-20.04
+          githubToken: ${{ github.token }}
+          setup: |
+            mkdir -p "${PWD}/artifacts"
+          dockerRunArgs: |
+            --volume "${PWD}/artifacts:/artifacts"
+          env:
+            artifact_dir: ${{ matrix.arch }}
+          shell: /bin/sh
+          install: |
+            sudo apt-get install -y wireguard-tools
+          run: |
+            make generate-version-and-build static
+            mkdir /artifacts/${artifact_dir}
+            cp etherguard-go* /artifacts/${artifact_dir}
 
     - uses: actions/upload-artifact@v2
       with:
-        name: etherguard
-        path: etherguard-go*
+        name: build
+        path: /artifacts/*
