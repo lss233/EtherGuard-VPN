@@ -24,7 +24,7 @@ jobs:
 
       - name: Build x86_64
         run: |
-          make all static vpp static-vpp
+          make all static vpp
 
       - uses: actions/upload-artifact@v2
         with:
