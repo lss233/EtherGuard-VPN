@@ -24,6 +24,28 @@ jobs:
         with:
           name: etherguard-x86_64
           path: etherguard-go*
+
+  mipsle:
+      runs-on: ubuntu-latest
+      name: Build on ${{ matrix.distro }} mipsle
+      steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.17
+      - name: Install requirements
+        run: sudo apt-get install -y wireguard-tools
+
+      - name: Build
+        run: GOOS=linux GOARCH=mipsle GOMIPS=softfloat make generate-version-and-build static
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: etherguard-mipsle
+          path: etherguard-go*
+
   multi-arch:
     runs-on: ubuntu-20.04
     name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
@@ -49,9 +71,10 @@ jobs:
             artifact_dir: ${{ matrix.arch }}
           shell: /bin/sh
           install: |
+            apt install software-properties-common -y
             add-apt-repository ppa:longsleep/golang-backports
             apt-get -y update
-            apt-get install -y wireguard-tools
+            apt-get install -y wireguard-tools golang-go build-essential git
           run: |
             make generate-version-and-build static
             mkdir /artifacts/${artifact_dir}
