@@ -68,7 +68,7 @@ jobs:
           shell: /bin/sh
           install: |
             apt-get -y update
-            apt install software-properties-common -y
+            apt install software-properties-common curl -y
             add-apt-repository ppa:longsleep/golang-backports
             echo "deb [trusted=yes] https://packagecloud.io/fdio/release/ubuntu focal main" | tee -a /etc/apt/sources.list.d/99fd.io.list > /dev/null
             curl -L https://packagecloud.io/fdio/release/gpgkey | apt-key add -
@@ -76,7 +76,7 @@ jobs:
             apt-get install -y vpp vpp-plugin-core python3-vpp-api vpp-dbg vpp-dev libmemif libmemif-dev
             apt-get install -y wireguard-tools golang-go build-essential git
           run: |
-            make all static vpp static-vpp
+            make all static vpp
             mkdir /artifacts/${artifact_dir}
             cp etherguard-go* /artifacts/${artifact_dir}
 
