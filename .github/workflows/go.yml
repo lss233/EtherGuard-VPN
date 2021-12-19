@@ -92,7 +92,7 @@ jobs:
           path: artifacts/armv7
           
       - uses: actions/upload-artifact@v2
-        if: ${{ matrix.arch == 'armv7' }}
+        if: ${{ matrix.arch == 'aarch64' }}
         with:
           name: etherguard-arm64
           path: artifacts/aarch64
