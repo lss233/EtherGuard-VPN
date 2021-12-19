@@ -41,6 +41,14 @@ jobs:
           asset_name: etherguard-go-x86_64
           tag: ${{ github.ref }}
 
+      - name: Upload x86_64 dynamic vpp build
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: etherguard-go-vpp
+          asset_name: etherguard-go-x86_64
+          tag: ${{ github.ref }}
+
       - name: Upload x86_64 static build
         uses: svenstaro/upload-release-action@v2
         with:
@@ -65,6 +73,14 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: etherguard-go
+          asset_name: etherguard-go-mipsle
+          tag: ${{ github.ref }}
+
+      - name: Upload mipsle dynamic vpp build
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: etherguard-go-vpp
           asset_name: etherguard-go-mipsle
           tag: ${{ github.ref }}
 
@@ -110,7 +126,7 @@ jobs:
             add-apt-repository ppa:longsleep/golang-backports
 
             apt-get -y update
-            apt-get install -y vpp vpp-plugin-core python3-vpp-api vpp-dbg vpp-dev libmemif libmemif-dev
+            apt-get install -y vpp vpp-plugin-core python3-vpp-api vpp-dbg vpp-dev libmemif libmemif-dev || true
             apt-get install -y wireguard-tools golang-go build-essential git
           run: |
             make all static
@@ -120,10 +136,14 @@ jobs:
 
       - uses: actions/upload-artifact@v2
         with:
-          name: etherguard-multi_arch
-          path: artifacts/
+          name: etherguard-arm32
+          path: artifacts/armv7
+      - uses: actions/upload-artifact@v2
+        with:
+          name: etherguard-arm64
+          path: artifacts/aarch64
 
-      - name: Upload dynamic build
+      - name: Upload ${{ matrix.arch }} dynamic build
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
@@ -131,7 +151,16 @@ jobs:
           asset_name: etherguard-go-${{ martix.arch }}
           tag: ${{ github.ref }}
 
-      - name: Upload static build
+      - name: Upload ${{ matrix.arch }} dynamic vpp build
+        if: ${{ matrix.arch == 'aarch64' }}
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: artifacts/${{ martix.arch }}/etherguard-go
+          asset_name: etherguard-go-${{ martix.arch }}
+          tag: ${{ github.ref }}
+
+      - name: Upload ${{ matrix.arch }} static build
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
