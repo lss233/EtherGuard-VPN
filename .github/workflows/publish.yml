@@ -103,7 +103,7 @@ jobs:
           install: |
             apt-get -y update
 
-            apt install software-properties-common -y
+            apt install software-properties-common curl -y
 
             echo "deb [trusted=yes] https://packagecloud.io/fdio/release/ubuntu focal main" > /etc/apt/sources.list.d/99fd.io.list
             curl -L https://packagecloud.io/fdio/release/gpgkey | apt-key add -
