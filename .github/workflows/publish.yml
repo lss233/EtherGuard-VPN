@@ -76,6 +76,7 @@ jobs:
           asset_name: etherguard-go-mipsle
           tag: ${{ github.ref }}
 
+
       - name: Upload mipsle dynamic vpp build
         uses: svenstaro/upload-release-action@v2
         with:
@@ -83,6 +84,7 @@ jobs:
           file: etherguard-go-vpp
           asset_name: etherguard-go-mipsle
           tag: ${{ github.ref }}
+
 
       - name: Upload mipsle static build
         uses: svenstaro/upload-release-action@v2
@@ -135,6 +137,7 @@ jobs:
             cp etherguard-go* /artifacts/${artifact_dir}
 
       - uses: actions/upload-artifact@v2
+
         if: ${{ matrix.arch == 'armv7' }}
         with:
           name: etherguard-arm32
